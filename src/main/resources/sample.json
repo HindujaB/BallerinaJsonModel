@@ -1,0 +1,63 @@
+{
+  "defaultPackage": {
+    "org": "hinduja",
+    "name": "sample_service",
+    "version": "0.1.0"
+  },
+  "modules": [
+    {
+      "moduleName": "sample_service",
+      "imports": [
+        {
+          "module": "ballerina/http"
+        }
+      ],
+      "variables": [
+        {
+          "name": "port",
+          "type": "int",
+          "value": 8080
+        }
+      ],
+      "services": [
+        {
+          "basePath": "/hello",
+          "listener": {
+            "type": "http:Listener",
+            "config": {
+              "port": {
+                "variableReference": "port"
+              }
+            }
+          },
+          "resources": [
+            {
+              "resourceName": "sayHello",
+              "method": "GET",
+              "path": "/sayHello",
+              "parameters": [],
+              "returnType": {
+                "type": "union",
+                "types": [
+                  "json",
+                  "error?"
+                ]
+              },
+              "body": [
+                {
+                  "statementType": "return",
+                  "value": {
+                    "type": "json",
+                    "content": {
+                      "message": "Hello, World!"
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
