@@ -36,14 +36,13 @@ public class BalSourceWriter {
         this.defaultPackage = pkg;
     }
 
-    public void write(SyntaxTree syntaxTree) {
+    public void writeDefaultModule(SyntaxTree syntaxTree) {
 
         try {
             String sourceCode = Formatter.format(syntaxTree).toSourceCode();
-            Path filePath = Paths.get(OUTPUT_PATH.resolve(DEFAULT_FILENAME).toFile().getCanonicalPath());
             generatePackageDetails(sourceCode);
 //            writeFile(filePath, sourceCode);
-        } catch (FormatterException | IOException e) {
+        } catch (FormatterException e) {
             throw new RuntimeException(e);
         }
 
@@ -116,4 +115,7 @@ public class BalSourceWriter {
         }
     }
 
+    public void writeNonDefaultModule(SyntaxTree syntaxTree) {
+
+    }
 }

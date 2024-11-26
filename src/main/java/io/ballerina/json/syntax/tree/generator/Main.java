@@ -13,15 +13,8 @@ import static io.ballerina.json.syntax.tree.generator.ModelConstants.DEFAULT_PAC
 public class Main {
 
     public static void main(String[] args) {
-        try (FileInputStream inputStream = new FileInputStream("src/main/resources/sample.json")) {
-            BMap jsonObject = (BMap) JsonUtils.parse(inputStream);
-            BMap pkg = jsonObject.getMapValue(StringUtils.fromString(DEFAULT_PACKAGE));
-            SyntaxTreeGenerator generator = new SyntaxTreeGenerator(jsonObject);
-            SyntaxTree syntaxTree = generator.generateSyntaxTree();
-            BalSourceWriter writer = new BalSourceWriter(pkg);
-            writer.write(syntaxTree);
-        } catch (IOException e) {
-            System.out.println("An error occurred: " + e.getMessage());
-        }
+        String inputPath = "src/main/resources/sample.json";
+        BallerinaCodeBuilder ballerinaCodeBuilder = new BallerinaCodeBuilder();
+        ballerinaCodeBuilder.build(inputPath);
     }
 }

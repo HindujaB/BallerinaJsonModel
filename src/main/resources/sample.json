@@ -9,7 +9,8 @@
       "moduleName": "sample_service",
       "imports": [
         {
-          "module": "ballerina/http"
+          "org": "ballerina",
+          "module": "http"
         }
       ],
       "variables": [
