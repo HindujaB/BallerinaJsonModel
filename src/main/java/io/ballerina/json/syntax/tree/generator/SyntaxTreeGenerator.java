@@ -8,6 +8,7 @@ import io.ballerina.compiler.syntax.tree.Token;
 import io.ballerina.runtime.api.utils.StringUtils;
 import io.ballerina.runtime.api.values.BArray;
 import io.ballerina.runtime.api.values.BMap;
+import io.ballerina.runtime.api.values.BString;
 import io.ballerina.tools.text.TextDocument;
 import io.ballerina.tools.text.TextDocuments;
 
@@ -29,10 +30,29 @@ public class SyntaxTreeGenerator {
     public SyntaxTree generateSyntaxTree(BMap module) {
         Token eofToken = createIdentifierToken("");
         List<ImportDeclarationNode> imports = generateImports(module);
-        List<ModuleMemberDeclarationNode> moduleMembers = new ArrayList<>();
-        ModulePartNode modulePartNode = createModulePartNode(createNodeList(imports), createNodeList(moduleMembers), eofToken);
+        List<ModuleMemberDeclarationNode> moduleMembers = generateModuleMembers(module);
+        ModulePartNode modulePartNode = createModulePartNode(createNodeList(imports),
+                createNodeList(moduleMembers), eofToken);
         TextDocument textDocument = TextDocuments.from("");
         return SyntaxTree.from(textDocument).modifyWith(modulePartNode);
+    }
+
+    private List<ModuleMemberDeclarationNode> generateModuleMembers(BMap module) {
+        List<ModuleMemberDeclarationNode> moduleMembers = new ArrayList<>();
+        BString variables = StringUtils.fromString("variables");
+        if (module.containsKey(variables)) {
+            BArray variableArray = module.getArrayValue(variables);
+            for (Object variable : variableArray.getValues()) {
+                if (variable == null) {
+                    continue;
+                }
+                BMap variableMap = (BMap) variable;
+                if (variableMap.containsKey(StringUtils.fromString("value"))) {
+                    moduleMembers.add(Utils.getLiteralVariableDeclarationNode(variableMap));
+                }
+            }
+        }
+        return moduleMembers;
     }
 
     private List<ImportDeclarationNode> generateImports(BMap module) {
