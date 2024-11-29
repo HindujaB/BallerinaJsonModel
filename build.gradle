@@ -50,6 +50,7 @@ dependencies {
     implementation group: 'org.ballerinalang', name: 'formatter-core', version: "${ballerinaLangVersion}"
     implementation group: 'org.ballerinalang', name: 'ballerina-tools-api', version: "${ballerinaLangVersion}"
     implementation group: 'org.ballerinalang', name: 'ballerina-runtime', version: "${ballerinaLangVersion}"
+    implementation "com.google.code.gson:gson:${project.gsonVersion}"
     // TestNG dependency for testing
     testImplementation 'org.testng:testng:7.10.2'
 }

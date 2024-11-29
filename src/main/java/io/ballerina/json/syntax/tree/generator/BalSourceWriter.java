@@ -1,9 +1,8 @@
 package io.ballerina.json.syntax.tree.generator;
 
 import io.ballerina.compiler.syntax.tree.SyntaxTree;
+import io.ballerina.json.model.BallerinaPackage;
 import io.ballerina.projects.util.FileUtils;
-import io.ballerina.runtime.api.utils.StringUtils;
-import io.ballerina.runtime.api.values.BMap;
 import org.ballerinalang.formatter.core.Formatter;
 import org.ballerinalang.formatter.core.FormatterException;
 import org.wso2.ballerinalang.util.RepoUtils;
@@ -30,9 +29,9 @@ import static io.ballerina.json.syntax.tree.generator.ModelConstants.USER_DIR;
 
 public class BalSourceWriter {
 
-    private final BMap defaultPackage;
+    private final BallerinaPackage.DefaultPackage defaultPackage;
 
-    public BalSourceWriter(BMap pkg) {
+    public BalSourceWriter(BallerinaPackage.DefaultPackage pkg) {
         this.defaultPackage = pkg;
     }
 
@@ -49,8 +48,7 @@ public class BalSourceWriter {
     }
 
     private void generatePackageDetails(String sourceCode) {
-        Path packagePath = Paths.get(OUTPUT_PATH.toString(), defaultPackage.getStringValue(
-                StringUtils.fromString("name")).getValue());
+        Path packagePath = Paths.get(OUTPUT_PATH.toString(), defaultPackage.getName());
         Path currentDir = Paths.get(System.getProperty(USER_DIR));
         if (!packagePath.isAbsolute()) {
             packagePath = Paths.get(currentDir.toString(), packagePath.toString()).normalize();
@@ -71,7 +69,7 @@ public class BalSourceWriter {
 
             String defaultManifest = FileUtils.readFileAsString( PKG_DEFAULTS + "/" + "manifest-app.toml");
             defaultManifest = defaultManifest
-                    .replace(ORG_NAME, defaultPackage.getStringValue(StringUtils.fromString("org")).getValue())
+                    .replace(ORG_NAME, defaultPackage.getOrg())
                     .replace(PKG_NAME, packageName)
                     .replace(DIST_VERSION, RepoUtils.getBallerinaShortVersion());
             Files.writeString(ballerinaToml, defaultManifest);

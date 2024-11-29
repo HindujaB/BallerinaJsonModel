@@ -23,14 +23,12 @@
       "services": [
         {
           "basePath": "/hello",
-          "listener": {
+          "listeners": [{
             "type": "http:Listener",
             "config": {
-              "port": {
-                "variableReference": "port"
-              }
+              "port": "${port}"
             }
-          },
+          }],
           "resources": [
             {
               "resourceName": "sayHello",
