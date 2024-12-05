@@ -1,4 +1,4 @@
-package io.ballerina.json.model;
+package io.ballerina.object.model;
 
 import java.util.List;
 import java.util.Map;
@@ -111,6 +111,25 @@ public class BallerinaPackage {
         private String basePath;
         private List<Listener> listeners;
         private List<Resource> resources;
+        private List<String> pathParams;
+        private List<String> queryParams;
+
+        public List<String> getQueryParams() {
+            return queryParams;
+        }
+
+        public void setQueryParams(List<String> queryParams) {
+            this.queryParams = queryParams;
+        }
+
+        public List<String> getPathParams() {
+            return pathParams;
+        }
+
+        public void setPathParams(List<String> pathParams) {
+            this.pathParams = pathParams;
+        }
+
 
         public List<Listener> getListeners() {
             return listeners;
@@ -143,6 +162,55 @@ public class BallerinaPackage {
         private String method;
         private String path;
         private List<Parameter> parameters;
+
+        public String getResourceName() {
+            return resourceName;
+        }
+
+        public void setResourceName(String resourceName) {
+            this.resourceName = resourceName;
+        }
+
+        public String getMethod() {
+            return method;
+        }
+
+        public void setMethod(String method) {
+            this.method = method;
+        }
+
+        public String getPath() {
+            return path;
+        }
+
+        public void setPath(String path) {
+            this.path = path;
+        }
+
+        public List<Parameter> getParameters() {
+            return parameters;
+        }
+
+        public void setParameters(List<Parameter> parameters) {
+            this.parameters = parameters;
+        }
+
+        public ReturnType getReturnType() {
+            return returnType;
+        }
+
+        public void setReturnType(ReturnType returnType) {
+            this.returnType = returnType;
+        }
+
+        public List<BodyStatement> getBody() {
+            return body;
+        }
+
+        public void setBody(List<BodyStatement> body) {
+            this.body = body;
+        }
+
         private ReturnType returnType;
         private List<BodyStatement> body;
 

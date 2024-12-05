@@ -1,7 +1,7 @@
-package io.ballerina.json.syntax.tree.generator;
+package io.ballerina.object.syntax.tree.generator;
 
 import io.ballerina.compiler.syntax.tree.SyntaxTree;
-import io.ballerina.json.model.BallerinaPackage;
+import io.ballerina.object.model.BallerinaPackage;
 
 import java.util.List;
 

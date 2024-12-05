@@ -1,7 +1,7 @@
-package io.ballerina.json.syntax.tree.generator;
+package io.ballerina.object.syntax.tree.generator;
 
 import io.ballerina.compiler.syntax.tree.SyntaxTree;
-import io.ballerina.json.model.BallerinaPackage;
+import io.ballerina.object.model.BallerinaPackage;
 import io.ballerina.projects.util.FileUtils;
 import org.ballerinalang.formatter.core.Formatter;
 import org.ballerinalang.formatter.core.FormatterException;
@@ -15,17 +15,17 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Optional;
 
-import static io.ballerina.json.syntax.tree.generator.ModelConstants.BALLERINA_TOML;
-import static io.ballerina.json.syntax.tree.generator.ModelConstants.DEFAULT_FILENAME;
-import static io.ballerina.json.syntax.tree.generator.ModelConstants.DEVCONTAINER;
-import static io.ballerina.json.syntax.tree.generator.ModelConstants.DIST_VERSION;
-import static io.ballerina.json.syntax.tree.generator.ModelConstants.GITIGNORE;
-import static io.ballerina.json.syntax.tree.generator.ModelConstants.GITIGNORE_FILE_NAME;
-import static io.ballerina.json.syntax.tree.generator.ModelConstants.ORG_NAME;
-import static io.ballerina.json.syntax.tree.generator.ModelConstants.OUTPUT_PATH;
-import static io.ballerina.json.syntax.tree.generator.ModelConstants.PKG_DEFAULTS;
-import static io.ballerina.json.syntax.tree.generator.ModelConstants.PKG_NAME;
-import static io.ballerina.json.syntax.tree.generator.ModelConstants.USER_DIR;
+import static io.ballerina.object.syntax.tree.generator.ModelConstants.BALLERINA_TOML;
+import static io.ballerina.object.syntax.tree.generator.ModelConstants.DEFAULT_FILENAME;
+import static io.ballerina.object.syntax.tree.generator.ModelConstants.DEVCONTAINER;
+import static io.ballerina.object.syntax.tree.generator.ModelConstants.DIST_VERSION;
+import static io.ballerina.object.syntax.tree.generator.ModelConstants.GITIGNORE;
+import static io.ballerina.object.syntax.tree.generator.ModelConstants.GITIGNORE_FILE_NAME;
+import static io.ballerina.object.syntax.tree.generator.ModelConstants.ORG_NAME;
+import static io.ballerina.object.syntax.tree.generator.ModelConstants.OUTPUT_PATH;
+import static io.ballerina.object.syntax.tree.generator.ModelConstants.PKG_DEFAULTS;
+import static io.ballerina.object.syntax.tree.generator.ModelConstants.PKG_NAME;
+import static io.ballerina.object.syntax.tree.generator.ModelConstants.USER_DIR;
 
 public class BalSourceWriter {
 

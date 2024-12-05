@@ -1,19 +1,13 @@
-package io.ballerina.json.syntax.tree.generator;
+package io.ballerina.object.syntax.tree.generator;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import io.ballerina.json.model.BallerinaPackage;
-import io.ballerina.json.model.VariableDeserializer;
+import io.ballerina.object.model.BallerinaPackage;
+import io.ballerina.object.model.VariableDeserializer;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Objects;
-import java.util.Scanner;
 
 public class Main {
 

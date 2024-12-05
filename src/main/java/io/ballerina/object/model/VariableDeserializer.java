@@ -1,4 +1,4 @@
-package io.ballerina.json.model;
+package io.ballerina.object.model;
 
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;

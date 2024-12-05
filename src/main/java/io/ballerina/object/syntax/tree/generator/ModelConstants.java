@@ -1,4 +1,4 @@
-package io.ballerina.json.syntax.tree.generator;
+package io.ballerina.object.syntax.tree.generator;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;

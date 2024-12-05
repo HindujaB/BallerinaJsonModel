@@ -1,4 +1,4 @@
-package io.ballerina.json.syntax.tree.generator;
+package io.ballerina.object.syntax.tree.generator;
 
 import io.ballerina.compiler.internal.parser.LexerTerminals;
 import io.ballerina.compiler.syntax.tree.AbstractNodeFactory;
@@ -17,7 +17,7 @@ import io.ballerina.compiler.syntax.tree.SeparatedNodeList;
 import io.ballerina.compiler.syntax.tree.SyntaxKind;
 import io.ballerina.compiler.syntax.tree.Token;
 import io.ballerina.compiler.syntax.tree.TypedBindingPatternNode;
-import io.ballerina.json.model.BallerinaPackage;
+import io.ballerina.object.model.BallerinaPackage;
 
 import static io.ballerina.compiler.syntax.tree.AbstractNodeFactory.createEmptyMinutiaeList;
 import static io.ballerina.compiler.syntax.tree.AbstractNodeFactory.createIdentifierToken;
