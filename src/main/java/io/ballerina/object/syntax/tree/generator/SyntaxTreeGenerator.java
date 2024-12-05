@@ -33,10 +33,10 @@ public class SyntaxTreeGenerator {
 
     private List<ModuleMemberDeclarationNode> generateModuleMembers(BallerinaPackage.Module module) {
         List<ModuleMemberDeclarationNode> moduleMembers = new ArrayList<>();
-        if (!module.getVariables().isEmpty()) {
-            List<BallerinaPackage.Variable> variables = module.getVariables();
+        if (!module.variables().isEmpty()) {
+            List<BallerinaPackage.Variable> variables = module.variables();
             for (BallerinaPackage.Variable variable : variables) {
-                Object value = variable.getValue();
+                Object value = variable.value();
                 if (value != null) {
                     moduleMembers.add(Utils.getLiteralVariableDeclarationNode(variable));
                 }
@@ -55,11 +55,11 @@ public class SyntaxTreeGenerator {
 
     private List<ImportDeclarationNode> generateImports(BallerinaPackage.Module module) {
         List<ImportDeclarationNode> imports = new ArrayList<>();
-        List<BallerinaPackage.Import> importList = module.getImports();
+        List<BallerinaPackage.Import> importList = module.imports();
 
         for (BallerinaPackage.Import importNode : importList) {
-            ImportDeclarationNode importDeclarationNode = Utils.getImportDeclarationNode(importNode.getOrg(),
-                    importNode.getModule());
+            ImportDeclarationNode importDeclarationNode = Utils.getImportDeclarationNode(importNode.org(),
+                    importNode.module());
             imports.add(importDeclarationNode);
         }
         return imports;

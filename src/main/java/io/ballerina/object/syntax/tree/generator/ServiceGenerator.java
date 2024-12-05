@@ -9,14 +9,14 @@ import java.util.Map;
 public class ServiceGenerator {
 
     public ModuleMemberDeclarationNode generateService(BallerinaPackage.Service service) {
-        List<BallerinaPackage.Listener> listeners = service.getListeners();
+        List<BallerinaPackage.Listener> listeners = service.listeners();
         for (BallerinaPackage.Listener listener : listeners) {
-            String type = listener.getType();
+            String type = listener.type();
             if (!type.startsWith("http")) {
                 continue;
             }
-            if (listener.getConfig() != null) {
-                Map<String, String> config = listener.getConfig();
+            if (listener.config() != null) {
+                Map<String, String> config = listener.config();
                 Object port = config.get("port");
 
             }

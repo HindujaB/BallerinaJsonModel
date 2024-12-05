@@ -1,9 +1,24 @@
 plugins {
     id("java")
+    id 'maven-publish'
 }
 
-group = "org.example"
+group = "org.ballerina"
 version = "1.0-SNAPSHOT"
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+        }
+    }
+    repositories {
+        maven {
+            url = uri('/Users/hinduja/Documents/WSO2_MI/repo')
+//            url = uri("$buildDir/repo") // Local repository
+        }
+    }
+}
 
 repositories {
     mavenCentral()

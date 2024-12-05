@@ -30,9 +30,11 @@ import static io.ballerina.object.syntax.tree.generator.ModelConstants.USER_DIR;
 public class BalSourceWriter {
 
     private final BallerinaPackage.DefaultPackage defaultPackage;
+    private final Path outputPath;
 
-    public BalSourceWriter(BallerinaPackage.DefaultPackage pkg) {
+    public BalSourceWriter(BallerinaPackage.DefaultPackage pkg, Path outputPath) {
         this.defaultPackage = pkg;
+        this.outputPath = outputPath == null ? OUTPUT_PATH : outputPath;
     }
 
     public void writeDefaultModule(SyntaxTree syntaxTree) {
@@ -48,7 +50,7 @@ public class BalSourceWriter {
     }
 
     private void generatePackageDetails(String sourceCode) {
-        Path packagePath = Paths.get(OUTPUT_PATH.toString(), defaultPackage.getName());
+        Path packagePath = Paths.get(outputPath.toString(), defaultPackage.name());
         Path currentDir = Paths.get(System.getProperty(USER_DIR));
         if (!packagePath.isAbsolute()) {
             packagePath = Paths.get(currentDir.toString(), packagePath.toString()).normalize();
@@ -69,7 +71,7 @@ public class BalSourceWriter {
 
             String defaultManifest = FileUtils.readFileAsString( PKG_DEFAULTS + "/" + "manifest-app.toml");
             defaultManifest = defaultManifest
-                    .replace(ORG_NAME, defaultPackage.getOrg())
+                    .replace(ORG_NAME, defaultPackage.org())
                     .replace(PKG_NAME, packageName)
                     .replace(DIST_VERSION, RepoUtils.getBallerinaShortVersion());
             Files.writeString(ballerinaToml, defaultManifest);

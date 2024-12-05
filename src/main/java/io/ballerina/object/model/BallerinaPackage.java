@@ -3,243 +3,51 @@ package io.ballerina.object.model;
 import java.util.List;
 import java.util.Map;
 
-public class BallerinaPackage {
-    private DefaultPackage defaultPackage;
-    private List<Module> modules;
+public record BallerinaPackage(DefaultPackage defaultPackage, List<Module> modules) {
 
-    public DefaultPackage getDefaultPackage() {
-        return defaultPackage;
+    public record DefaultPackage(String org, String name, String version) {
+
     }
 
-    public void setDefaultPackage(DefaultPackage defaultPackage) {
-        this.defaultPackage = defaultPackage;
+    public record Module(String moduleName, List<Import> imports, List<Variable> variables, List<Service> services) {
+
     }
 
-    public List<Module> getModules() {
-        return modules;
+    public record Import(String org, String module) {
+
     }
 
-    public void setModules(List<Module> modules) {
-        this.modules = modules;
+    public record Variable(String name, String type, Object value) {
+
     }
 
-    public static class DefaultPackage {
-        private String org;
-        private String name;
-        private String version;
+    public record Service(String basePath, List<Listener> listeners, List<Resource> resources, List<String> pathParams,
+                          List<String> queryParams) {
 
-        public String getOrg() {
-            return org;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public String getVersion() {
-            return version;
-        }
     }
 
-    public static class Module {
-        private String moduleName;
-        private List<Import> imports;
-        private List<Variable> variables;
-        private List<Service> services;
+    public record Listener(String type, Map<String, String> config) {
 
-        public String getModuleName() {
-            return moduleName;
-        }
-
-        public List<Import> getImports() {
-            return imports;
-        }
-
-        public List<Variable> getVariables() {
-            return variables;
-        }
-
-        public List<Service> getServices() {
-            return services;
-        }
     }
 
-    public static class Import {
-        private String org;
-        private String module;
+    public record Resource(String resourceName, String method, String path, List<Parameter> parameters,
+                           ReturnType returnType, List<BodyStatement> body) {
 
-        public String getOrg() {
-            return org;
-        }
-
-        public String getModule() {
-            return module;
-        }
     }
 
-    public static class Variable {
-        private String name;
-        private String type;
-        private Object value; // Use Object for flexibility (e.g., int, String, etc.)
+    public record Parameter(String name, String type) {
 
-        public String getName() {
-            return name;
-        }
-
-        public String getType() {
-            return type;
-        }
-
-        public Object getValue() {
-            return value;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public void setType(String type) {
-            this.type = type;
-        }
-
-        public void setValue(Object i) {
-            this.value = i;
-        }
     }
 
-    public static class Service {
-        private String basePath;
-        private List<Listener> listeners;
-        private List<Resource> resources;
-        private List<String> pathParams;
-        private List<String> queryParams;
+    public record ReturnType(String type, List<String> types) {
 
-        public List<String> getQueryParams() {
-            return queryParams;
-        }
-
-        public void setQueryParams(List<String> queryParams) {
-            this.queryParams = queryParams;
-        }
-
-        public List<String> getPathParams() {
-            return pathParams;
-        }
-
-        public void setPathParams(List<String> pathParams) {
-            this.pathParams = pathParams;
-        }
-
-
-        public List<Listener> getListeners() {
-            return listeners;
-        }
-
-        public String getBasePath() {
-            return basePath;
-        }
-
-        public List<Resource> getResources() {
-            return resources;
-        }
     }
 
-    public static class Listener {
-        private String type;
-        private Map<String, String> config; // Configurations are key-value pairs
+    public record BodyStatement(String statementType, Value value) {
 
-        public String getType() {
-            return type;
-        }
-
-        public Map<String, String> getConfig() {
-            return config;
-        }
     }
 
-    public static class Resource {
-        private String resourceName;
-        private String method;
-        private String path;
-        private List<Parameter> parameters;
+    public record Value(String type, Map<String, Object> content) {
 
-        public String getResourceName() {
-            return resourceName;
-        }
-
-        public void setResourceName(String resourceName) {
-            this.resourceName = resourceName;
-        }
-
-        public String getMethod() {
-            return method;
-        }
-
-        public void setMethod(String method) {
-            this.method = method;
-        }
-
-        public String getPath() {
-            return path;
-        }
-
-        public void setPath(String path) {
-            this.path = path;
-        }
-
-        public List<Parameter> getParameters() {
-            return parameters;
-        }
-
-        public void setParameters(List<Parameter> parameters) {
-            this.parameters = parameters;
-        }
-
-        public ReturnType getReturnType() {
-            return returnType;
-        }
-
-        public void setReturnType(ReturnType returnType) {
-            this.returnType = returnType;
-        }
-
-        public List<BodyStatement> getBody() {
-            return body;
-        }
-
-        public void setBody(List<BodyStatement> body) {
-            this.body = body;
-        }
-
-        private ReturnType returnType;
-        private List<BodyStatement> body;
-
-        
-    }
-
-    public static class Parameter {
-        private String name;
-        private String type;
-    }
-
-    public static class ReturnType {
-        private String type;
-        private List<String> types; // For union types
-
-        
-    }
-
-    public static class BodyStatement {
-        private String statementType; // e.g., "return"
-        private Value value;
-
-        
-    }
-
-    public static class Value {
-        private String type; // e.g., "json"
-        private Map<String, Object> content; // For storing JSON-like structures
-
-        
     }
 }

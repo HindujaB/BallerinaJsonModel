@@ -57,14 +57,14 @@ public class Utils {
     }
 
     public static ModuleMemberDeclarationNode getLiteralVariableDeclarationNode(BallerinaPackage.Variable variable) {
-        String type = variable.getType();
+        String type = variable.type();
         SyntaxKind typeSyntaxKind = getBuiltinTypeSyntaxKind(type);
         BuiltinSimpleNameReferenceNode typeBindingPattern = createBuiltinSimpleNameReferenceNode(typeSyntaxKind,
                 createIdentifierToken(type));
-        String name = variable.getName();
+        String name = variable.name();
         CaptureBindingPatternNode bindingPattern = createCaptureBindingPatternNode(createIdentifierToken(name));
         TypedBindingPatternNode bindingPatternNode = createTypedBindingPatternNode(typeBindingPattern, bindingPattern);
-        String value = variable.getValue().toString();
+        String value = variable.value().toString();
         ExpressionNode expressionNode = createBasicLiteral(typeSyntaxKind, value);
         return createModuleVariableDeclarationNode(null, null, NodeFactory.createEmptyNodeList(),
                 bindingPatternNode, createToken(EQUAL_TOKEN), expressionNode, createToken(SEMICOLON_TOKEN));

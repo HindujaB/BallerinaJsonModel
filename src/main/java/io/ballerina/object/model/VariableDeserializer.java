@@ -11,10 +11,9 @@ public class VariableDeserializer implements JsonDeserializer<BallerinaPackage.V
     public BallerinaPackage.Variable deserialize(JsonElement json, java.lang.reflect.Type typeOfT, com.google.gson.JsonDeserializationContext context)
             throws JsonParseException {
         JsonObject jsonObject = json.getAsJsonObject();
-
-        BallerinaPackage.Variable variable = new BallerinaPackage.Variable();
-        variable.setName(jsonObject.get("name").getAsString());
-        variable.setType(jsonObject.get("type").getAsString());
+        String name = jsonObject.get("name").getAsString();
+        String type = jsonObject.get("type").getAsString();
+        Object value;
 
         // Handle value based on its JSON representation
         JsonElement valueElement = jsonObject.get("value");
@@ -24,16 +23,16 @@ public class VariableDeserializer implements JsonDeserializer<BallerinaPackage.V
 
                 // Decide if it's an int, long, or double
                 if (numberValue.longValue() == numberValue.intValue()) {
-                    variable.setValue(numberValue.intValue()); // Treat as int if no loss of precision
+                    value = numberValue.intValue(); // Treat as int if no loss of precision
                 } else {
-                    variable.setValue(numberValue.longValue()); // Treat as long if larger
+                    value = numberValue.longValue(); // Treat as long if larger
                 }
             } else {
-                variable.setValue(valueElement.getAsString()); // Fallback for non-numeric primitives
+                value = valueElement.getAsString(); // Fallback for non-numeric primitives
             }
         } else {
-            variable.setValue(null); // Handle non-primitive values if necessary
+            value = null; // Handle non-primitive values if necessary
         }
-        return variable;
+        return new BallerinaPackage.Variable(name, type, value);
     }
 }

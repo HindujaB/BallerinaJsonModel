@@ -19,7 +19,7 @@ public class Main {
         try {
             BallerinaPackage ballerinaPackage = gson.fromJson(readFile(inputPath), BallerinaPackage.class);
             BallerinaCodeBuilder ballerinaCodeBuilder = new BallerinaCodeBuilder();
-            ballerinaCodeBuilder.build(ballerinaPackage);
+            ballerinaCodeBuilder.build(ballerinaPackage, null);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
