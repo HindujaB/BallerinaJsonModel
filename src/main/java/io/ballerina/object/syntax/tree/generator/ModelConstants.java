@@ -16,6 +16,8 @@ public class ModelConstants {
     public static final String GITIGNORE_FILE_NAME = ".gitignore";
     public static final String GITIGNORE = "gitignore";
     public static final String DEVCONTAINER = "devcontainer";
+    public static final String DEFAULT_EP = "ep";
+    public static final String ANY_OR_ERROR = "any|error";
 
 
     public static Path OUTPUT_PATH = Paths.get("src/main/resources", "output");

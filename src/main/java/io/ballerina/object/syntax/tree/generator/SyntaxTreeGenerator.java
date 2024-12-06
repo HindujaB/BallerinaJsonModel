@@ -3,6 +3,7 @@ package io.ballerina.object.syntax.tree.generator;
 import io.ballerina.compiler.syntax.tree.ImportDeclarationNode;
 import io.ballerina.compiler.syntax.tree.ModuleMemberDeclarationNode;
 import io.ballerina.compiler.syntax.tree.ModulePartNode;
+import io.ballerina.compiler.syntax.tree.NodeParser;
 import io.ballerina.compiler.syntax.tree.SyntaxTree;
 import io.ballerina.compiler.syntax.tree.Token;
 import io.ballerina.object.model.BallerinaPackage;
@@ -43,24 +44,21 @@ public class SyntaxTreeGenerator {
             }
         }
 
-//        if (!module.getServices().isEmpty()) {
-//            List<BallerinaPackage.Service> services = module.getServices();
-//            for (BallerinaPackage.Service service : services) {
-//                ServiceGenerator serviceGenerator = new ServiceGenerator();
-//                moduleMembers.add(serviceGenerator.generateService(service));
-//            }
-//        }
+        if (!module.services().isEmpty()) {
+            ServiceGenerator serviceGenerator = new ServiceGenerator();
+            for (BallerinaPackage.Service service : module.services()) {
+                serviceGenerator.generateService(service, moduleMembers);
+            }
+        }
         return moduleMembers;
     }
 
     private List<ImportDeclarationNode> generateImports(BallerinaPackage.Module module) {
         List<ImportDeclarationNode> imports = new ArrayList<>();
-        List<BallerinaPackage.Import> importList = module.imports();
-
-        for (BallerinaPackage.Import importNode : importList) {
-            ImportDeclarationNode importDeclarationNode = Utils.getImportDeclarationNode(importNode.org(),
-                    importNode.module());
-            imports.add(importDeclarationNode);
+        for (BallerinaPackage.Import importNode : module.imports()) {
+            String importStr = BallerinaTemplates.IMPORT_TEMPLATE.replace("{ORG}", importNode.org())
+                    .replace("{MODULE}", importNode.module());
+            imports.add(NodeParser.parseImportDeclaration(importStr));
         }
         return imports;
     }

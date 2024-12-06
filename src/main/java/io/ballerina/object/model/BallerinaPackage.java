@@ -21,8 +21,7 @@ public record BallerinaPackage(DefaultPackage defaultPackage, List<Module> modul
 
     }
 
-    public record Service(String basePath, List<Listener> listeners, List<Resource> resources, List<String> pathParams,
-                          List<String> queryParams) {
+    public record Service(String basePath, List<Listener> listeners, List<Resource> resources) {
 
     }
 
@@ -31,8 +30,7 @@ public record BallerinaPackage(DefaultPackage defaultPackage, List<Module> modul
     }
 
     public record Resource(String resourceName, String method, String path, List<Parameter> parameters,
-                           ReturnType returnType, List<BodyStatement> body) {
-
+                           List<BodyStatement> body, List<String> queryParams, String returnType) {
     }
 
     public record Parameter(String name, String type) {
