@@ -2,6 +2,8 @@ package io.ballerina.object.syntax.tree.generator;
 
 import io.ballerina.compiler.syntax.tree.SyntaxTree;
 import io.ballerina.object.model.BallerinaPackage;
+import org.ballerinalang.formatter.core.Formatter;
+import org.ballerinalang.formatter.core.FormatterException;
 
 import java.nio.file.Path;
 import java.util.List;
@@ -14,6 +16,11 @@ public class BallerinaCodeBuilder {
         SyntaxTreeGenerator generator = new SyntaxTreeGenerator();
         for (BallerinaPackage.Module module : modules) {
             SyntaxTree syntaxTree = generator.generateSyntaxTree(module);
+            try {
+                syntaxTree = Formatter.format(syntaxTree);
+            } catch (FormatterException e) {
+                throw new RuntimeException(e);
+            }
             BalSourceWriter writer = new BalSourceWriter(pkg, outputPath);
             if (isDefaultModule(pkg, module)) {
                 writer.writeDefaultModule(syntaxTree);
