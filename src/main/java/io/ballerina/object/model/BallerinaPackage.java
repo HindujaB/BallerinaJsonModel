@@ -17,7 +17,7 @@ public record BallerinaPackage(DefaultPackage defaultPackage, List<Module> modul
 
     }
 
-    public record Variable(String name, String type, Object value) {
+    public record Variable(String name, String type, String expression) {
 
     }
 
@@ -30,22 +30,49 @@ public record BallerinaPackage(DefaultPackage defaultPackage, List<Module> modul
     }
 
     public record Resource(String resourceName, String method, String path, List<Parameter> parameters,
-                           List<BodyStatement> body, List<String> queryParams, String returnType) {
-    }
-
-    public record Parameter(String name, String type) {
+                           List<Statement> body, List<String> queryParams, String returnType) {
 
     }
 
-    public record ReturnType(String type, List<String> types) {
+    public record Function(String functionName, List<Parameter> parameters, List<Statement> body, String returnType) {
 
     }
 
-    public record BodyStatement(String statementType, Value value) {
+    public record Parameter(String name, String type, String annotations) {
 
     }
 
-    public record Value(String type, Map<String, Object> content) {
+    public interface Statement {
+
+        String statementType();
+    }
+
+    public record MatchStatement(String expression, List<MatchPattern> patterns) implements Statement {
+
+        @Override
+        public String statementType() {
+            return "Match";
+        }
+    }
+
+    public record MatchPattern(String clause, List<Statement> statements) {
 
     }
+
+    public record CallStatement(String functionName, List<String> parameters) implements Statement {
+
+        @Override
+        public String statementType() {
+            return "Call";
+        }
+    }
+
+    public record BallerinaStatement(String statement) implements Statement {
+
+        @Override
+        public String statementType() {
+            return "Statement";
+        }
+    }
+
 }

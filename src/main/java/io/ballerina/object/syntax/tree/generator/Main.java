@@ -3,7 +3,6 @@ package io.ballerina.object.syntax.tree.generator;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import io.ballerina.object.model.BallerinaPackage;
-import io.ballerina.object.model.VariableDeserializer;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -14,7 +13,6 @@ public class Main {
     public static void main(String[] args) {
         String inputPath = "src/main/resources/sample.json";
         Gson gson = new GsonBuilder()
-                .registerTypeAdapter(BallerinaPackage.Variable.class, new VariableDeserializer())
                 .create();
         try {
             BallerinaPackage ballerinaPackage = gson.fromJson(readFile(inputPath), BallerinaPackage.class);
