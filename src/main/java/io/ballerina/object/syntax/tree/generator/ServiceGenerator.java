@@ -6,10 +6,7 @@ import io.ballerina.object.model.BallerinaPackage;
 
 import java.util.List;
 
-import static io.ballerina.object.syntax.tree.generator.BallerinaTemplates.BODY;
-import static io.ballerina.object.syntax.tree.generator.BallerinaTemplates.MATCH;
-import static io.ballerina.object.syntax.tree.generator.BallerinaTemplates.MATCH_CASE;
-import static io.ballerina.object.syntax.tree.generator.BallerinaTemplates.SERVICE;
+import static io.ballerina.object.syntax.tree.generator.BallerinaCodeGenerator.BODY;
 import static io.ballerina.object.syntax.tree.generator.ModelConstants.ANY_OR_ERROR;
 
 public class ServiceGenerator {
@@ -26,13 +23,12 @@ public class ServiceGenerator {
             String resourceParams = generateResourceParams(resource);
             String resourceReturns = generateResourceReturns(resource);
             String resourceBody = generateResourceBody(resource);
-            resourceBuilder.append(BallerinaTemplates.RESOURCE.replace("{METHOD}", resource.method())
-                    .replace("{PATH}", resource.path()).replace("{PARAMS}", resourceParams)
-                    .replace("{RETURNS}", resourceReturns).replace("{BODY}", resourceBody));
+            resourceBuilder.append(BallerinaCodeGenerator.generateResourceFunction(resource.method(), resource.path(),
+                    resourceParams, resourceReturns, resourceBody));
             resourceBuilder.append("\n");
         }
-        return SERVICE.replace("{NAME}", service.basePath()).replace("{LISTENERS}",
-                String.join(", ", listenerVars)).replace("{RESOURCES}", resourceBuilder.toString());
+        return BallerinaCodeGenerator.generateServiceDefinition(service.basePath(), String.join(", ",
+                listenerVars), resourceBuilder.toString());
     }
 
     private String generateResourceBody(BallerinaPackage.Resource resource) {
@@ -45,14 +41,14 @@ public class ServiceGenerator {
         for (BallerinaPackage.Statement statement : statements) {
             switch (statement.statementType()) {
                 case "Statement" -> {
-                    BallerinaPackage.BallerinaStatement ballerinaStatement = (BallerinaPackage.BallerinaStatement) statement;
+                    BallerinaPackage.BallerinaStatement ballerinaStatement = (BallerinaPackage.BallerinaStatement)
+                            statement;
                     body.append(ballerinaStatement.statement()).append("\n");
                 }
                 case "Match" -> {
                     BallerinaPackage.MatchStatement matchStatement = (BallerinaPackage.MatchStatement) statement;
-                    body.append(MATCH
-                            .replace("{EXPR}", matchStatement.expression())
-                            .replace("{MATCH_CASES}", getMatchCases(matchStatement.patterns())));
+                    body.append(BallerinaCodeGenerator.generateMatchExpression(matchStatement.expression(),
+                            getMatchCases(matchStatement.patterns())));
                     body.append("\n");
                 }
                 case "Call" -> {
@@ -70,9 +66,7 @@ public class ServiceGenerator {
         for (BallerinaPackage.MatchPattern pattern : patterns) {
             StringBuilder matchBody = new StringBuilder();
             generateStatements(pattern.statements(), matchBody);
-            body.append(MATCH_CASE
-                    .replace("{PATTERN}", pattern.clause())
-                    .replace("{BODY}", matchBody.toString()));
+            body.append(BallerinaCodeGenerator.generateMatchCase(pattern.clause(), matchBody.toString()));
         }
         return body.toString();
     }
@@ -86,14 +80,16 @@ public class ServiceGenerator {
         StringBuilder params = new StringBuilder();
         for (int i = 0; i < parameters.size(); i++) {
             BallerinaPackage.Parameter parameter = parameters.get(i);
-            params.append(BallerinaTemplates.PARAM.replace("{ANNOTATION}", parameter.annotations()).replace("{TYPE}", parameter.type()).replace("{NAME}", parameter.name()));
+            params.append(BallerinaCodeGenerator.generateParameterDeclaration(parameter.annotations(),
+                    parameter.type(), parameter.name()));
             if (i < parameters.size() - 1) {
                 params.append(", ");
             }
         }
         List<String> queryParams = resource.queryParams();
         for (String parameter : queryParams) {
-            params.append(BallerinaTemplates.PARAM.replace("{ANNOTATION}", "").replace("{TYPE}", "string").replace("{NAME}", parameter)).append(", ");
+            params.append(BallerinaCodeGenerator.generateParameterDeclaration("", "string",
+                    parameter)).append(", ");
         }
         return queryParams.isEmpty() ? params.toString() : params.substring(0, params.length() - 2);
     }

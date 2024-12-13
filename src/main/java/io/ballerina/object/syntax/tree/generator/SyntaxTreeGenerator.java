@@ -17,7 +17,6 @@ import java.util.Map;
 import static io.ballerina.compiler.syntax.tree.AbstractNodeFactory.createIdentifierToken;
 import static io.ballerina.compiler.syntax.tree.AbstractNodeFactory.createNodeList;
 import static io.ballerina.compiler.syntax.tree.NodeFactory.createModulePartNode;
-import static io.ballerina.object.syntax.tree.generator.BallerinaTemplates.LISTENER;
 
 public class SyntaxTreeGenerator {
 
@@ -71,17 +70,14 @@ public class SyntaxTreeGenerator {
         if (!additionalConfig.isEmpty()) {
             additionalConfig.setLength(additionalConfig.length() - 2);
         }
-        return LISTENER.replace("{TYPE}", listener.type())
-                .replace("{NAME}", listener.name())
-                .replace("{PORT}", port)
-                .replace("{CONFIG}", additionalConfig.toString());
+        return BallerinaCodeGenerator.generateListenerDeclaration(listener.type(), listener.name(), port,
+                additionalConfig.toString());
     }
 
     private List<ImportDeclarationNode> generateImports(BallerinaPackage.Module module) {
         List<ImportDeclarationNode> imports = new ArrayList<>();
         for (BallerinaPackage.Import importNode : module.imports()) {
-            String importStr = BallerinaTemplates.IMPORT.replace("{ORG}", importNode.org())
-                    .replace("{MODULE}", importNode.module());
+            String importStr = BallerinaCodeGenerator.generateImportStatement(importNode.org(), importNode.module());
             imports.add(NodeParser.parseImportDeclaration(importStr));
         }
         return imports;
