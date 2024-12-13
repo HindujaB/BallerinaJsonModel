@@ -12,10 +12,12 @@ import io.ballerina.tools.text.TextDocuments;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import static io.ballerina.compiler.syntax.tree.AbstractNodeFactory.createIdentifierToken;
 import static io.ballerina.compiler.syntax.tree.AbstractNodeFactory.createNodeList;
 import static io.ballerina.compiler.syntax.tree.NodeFactory.createModulePartNode;
+import static io.ballerina.object.syntax.tree.generator.BallerinaTemplates.LISTENER;
 
 public class SyntaxTreeGenerator {
 
@@ -44,6 +46,11 @@ public class SyntaxTreeGenerator {
             }
         }
 
+        for (BallerinaPackage.Listener listener : module.listeners()) {
+            String listenerDeclaration = generateListenerDeclaration(listener);
+            moduleMembers.add(NodeParser.parseModuleMemberDeclaration(listenerDeclaration));
+        }
+
         if (!module.services().isEmpty()) {
             ServiceGenerator serviceGenerator = new ServiceGenerator();
             for (BallerinaPackage.Service service : module.services()) {
@@ -51,6 +58,23 @@ public class SyntaxTreeGenerator {
             }
         }
         return moduleMembers;
+    }
+
+    private String generateListenerDeclaration(BallerinaPackage.Listener listener) {
+        String port = listener.config().get("port");
+        StringBuilder additionalConfig = new StringBuilder();
+        for (Map.Entry<String, String> entry : listener.config().entrySet()) {
+            if (!"port".equals(entry.getKey())) {
+                additionalConfig.append(entry.getKey()).append(" : \"").append(entry.getValue()).append("\", ");
+            }
+        }
+        if (!additionalConfig.isEmpty()) {
+            additionalConfig.setLength(additionalConfig.length() - 2);
+        }
+        return LISTENER.replace("{TYPE}", listener.type())
+                .replace("{NAME}", listener.name())
+                .replace("{PORT}", port)
+                .replace("{CONFIG}", additionalConfig.toString());
     }
 
     private List<ImportDeclarationNode> generateImports(BallerinaPackage.Module module) {

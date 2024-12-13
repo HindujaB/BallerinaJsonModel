@@ -4,31 +4,19 @@ import io.ballerina.compiler.syntax.tree.ModuleMemberDeclarationNode;
 import io.ballerina.compiler.syntax.tree.NodeParser;
 import io.ballerina.object.model.BallerinaPackage;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import static io.ballerina.object.syntax.tree.generator.BallerinaTemplates.BODY;
-import static io.ballerina.object.syntax.tree.generator.BallerinaTemplates.LISTENER;
 import static io.ballerina.object.syntax.tree.generator.BallerinaTemplates.MATCH;
 import static io.ballerina.object.syntax.tree.generator.BallerinaTemplates.MATCH_CASE;
 import static io.ballerina.object.syntax.tree.generator.BallerinaTemplates.SERVICE;
 import static io.ballerina.object.syntax.tree.generator.ModelConstants.ANY_OR_ERROR;
-import static io.ballerina.object.syntax.tree.generator.ModelConstants.DEFAULT_EP;
 
 public class ServiceGenerator {
 
-    private int listenerCount = 0;
-
     public void generateService(BallerinaPackage.Service service, List<ModuleMemberDeclarationNode> moduleMembers) {
-        List<BallerinaPackage.Listener> listeners = service.listeners();
-        List<String> listenerVars = new ArrayList<>();
-        for (BallerinaPackage.Listener listener : listeners) {
-            String listenerDeclaration = generateListenerDeclaration(listener, listenerVars);
-            moduleMembers.add(NodeParser.parseModuleMemberDeclaration(listenerDeclaration));
-            listenerCount++;
-        }
-        String serviceDeclaration = generateServiceDeclaration(service, listenerVars);
+        List<String> listeners = service.listenerRefs();
+        String serviceDeclaration = generateServiceDeclaration(service, listeners);
         moduleMembers.add(NodeParser.parseModuleMemberDeclaration(serviceDeclaration));
     }
 
@@ -110,22 +98,4 @@ public class ServiceGenerator {
         return queryParams.isEmpty() ? params.toString() : params.substring(0, params.length() - 2);
     }
 
-    private String generateListenerDeclaration(BallerinaPackage.Listener listener, List<String> listenerVars) {
-        String port = listener.config().get("port");
-        StringBuilder additionalConfig = new StringBuilder();
-        for (Map.Entry<String, String> entry : listener.config().entrySet()) {
-            if (!"port".equals(entry.getKey())) {
-                additionalConfig.append(entry.getKey()).append(" : \"").append(entry.getValue()).append("\", ");
-            }
-        }
-        if (!additionalConfig.isEmpty()) {
-            additionalConfig.setLength(additionalConfig.length() - 2);
-        }
-        String listenerVar = DEFAULT_EP + listenerCount;
-        listenerVars.add(listenerVar);
-        return LISTENER.replace("{TYPE}", listener.type())
-                .replace("{NAME}", listenerVar)
-                .replace("{PORT}", port)
-                .replace("{CONFIG}", additionalConfig.toString());
-    }
 }
